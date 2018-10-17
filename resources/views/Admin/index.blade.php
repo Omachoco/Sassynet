@@ -1,10 +1,7 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Untitled Document</title>
-</head>
+@extends('layouts.admin')
 
-<body>
-</body>
-</html>
+
+@section('content')
+<h1> Admin </h1>
+
+@endsection
