@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User; 
+use App\User;
+use App\Role; 
+use App\Http\Requests\UsersRequest;
 
 class AdminUsersController extends Controller
 {
@@ -24,8 +26,9 @@ class AdminUsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-       return view('admin.users.create');
+    {  
+	   $roles = Role::pluck('name', 'id')->all();//usesd to populate the role selecrt input on the create form
+       return view('admin.users.create', compact( 'roles'));
     }
 
     /**
@@ -34,10 +37,13 @@ class AdminUsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UsersRequest $request)
+	
     {
-         
-    }
+        return User::create($request->all());
+		return redirect('/admin/users');
+			
+	 }
 
     /**
      * Display the specified resource.
