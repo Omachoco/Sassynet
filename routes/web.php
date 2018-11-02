@@ -22,8 +22,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/admin', function(){
 	return view('admin.index');
 	});
-Route::get('/admin/accord', function(){
-	return view('admin.accord');
+Route::group(['middleware'=>'admin'], function(){
+	Route::resource('/admin/users', 'AdminUsersController');
+	Route::resource('/admin/posts', 'AdminPostController');
 	});
 
-Route::resource('admin/users', 'AdminUsersController');

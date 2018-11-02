@@ -5,7 +5,7 @@
 <h1>Create Users </h1>
 
 @include('partials.form_errors')
-
+ <div class="col-lg-12">
 {!! Form::open(['method'=>'POST', 'action'=>'AdminUsersController@store', 'files'=>true]) !!}
    <div class="form-group">
     {!!Form::label('name', 'Name: ');!!}
@@ -23,8 +23,8 @@
    </div>
    
     <div class="form-group">
-    {!!Form::label('file', 'Upload photo: ');!!}
-    {!!Form::file('file', null, ['class' => 'form-control']);!!}
+    {!!Form::label('path', 'Upload photo: ');!!}
+    {!!Form::file('path', null, ['class' => 'form-control-file']);!!}
    </div>
    
    
@@ -39,7 +39,7 @@
    </div>
    
     {!!Form::submit('Submit!', ['class' => 'btn btn-primary']);!!}
-    
+    </div>
 {!! Form::close() !!}
 
 

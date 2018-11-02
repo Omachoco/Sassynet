@@ -114,22 +114,22 @@
     <a class="nav-link has-arrow has-arrow" href="#" aria-expanded="true"><i class="fa fa-wrench fa-fw"></i>User</a>
        <ul>
           <li>
-            <a href="/users">All Users</a>
+            <a href="{{route('users.index')}}">All Users</a>
           </li>
           <li>
-              <a href="/users/create">Create User</a>
-          </li
-        ></ul>
+              <a href="{{route('users.create')}}">Create User</a>
+          </li>
+          </ul>
     </li>
     
      <li class="nav-item list-group-item">
     <a class="nav-link has-arrow has-arrow" href="#" aria-expanded="true"><i class="fa fa-wrench fa-fw"></i>Posts</a>
        <ul>
           <li>
-            <a href="/posts">All Posts</a>
+            <a href={{route('posts.index')}}>All Posts</a>
           </li>
           <li>
-              <a href="/posts/create">Create Post</a>
+              <a href={{route('posts.create')}}>Create Post</a>
           </li
         ></ul>
     </li>
@@ -175,11 +175,9 @@
 
 <div class="col-9 container-fluid">
         <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header"></h1>
 
                 @yield('content')
-            </div>
+           
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
