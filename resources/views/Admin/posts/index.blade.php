@@ -28,7 +28,6 @@
           <td>{{$post->category?$post->category->name:'Uncategorized'}}</td>
           <td><img src="{{$post->photos?$post->photos->path:'/images/imgholder.jpeg'}}" class="img-fluid rounded mx-auto" height="50" width="50"></td>
            <td><a href="{{route('posts.edit', $post->id)}}">{{$post->title}}</a></td>
-           <td>{{$post->title}}</td>
            <td>{{$post->body}}</td>
            <td>{{$post->created_at->diffForHumans()}}</td>
            <td>{{$post->updated_at->diffForHumans()}}</td>

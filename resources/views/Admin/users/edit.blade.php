@@ -5,8 +5,17 @@
 
 <div class="col-sm-3">
 <h1 align="center">Edit user</h1>
-<img src="{{$user->photo?$user->photo->path:'/images/imgholder.jpeg'}}" class="img-fluid rounded mx-auto" height="100" width="200" >
+
+<div class="card" style="width: 14rem;">
+  <img src="{{$user->photo?$user->photo->path:'/images/placeholde.jpeg'}}" class="img-fluid rounded mx-auto card-img-top" height="100" width="100">
+  <div class="card-body">
+    {!! Form::open(['method'=>'POST',  'action'=>['AdminPostController@destroy', $user->id]]) !!}
+    {!!Form::submit('Edit!', ['class' => 'btn btn-danger col-6']);!!}
+    {!! Form::close() !!}
+  </div>
 </div>
+</div>
+
 
 <div class="col-sm-9">
 
@@ -25,12 +34,12 @@
     
    <div class="form-group">
     {!!Form::label('role_id', 'Role: ');!!}
-    {!!Form::select('role_id',[''=>'Choose option'] + $roles, ['class' => 'form-control']);!!}
+    {!!Form::select('role_id', [$roles, ''=>'No Role'], ['class' => 'form-control']);!!}
    </div>
    
     <div class="form-group">
     {!!Form::label('photo_id', 'Upload photo: ');!!}
-    {!!Form::file('photo_id', null, ['class' => 'form-control']);!!}
+    {!!Form::file('path', null, ['class' => 'form-control']);!!}
    </div>
    
    

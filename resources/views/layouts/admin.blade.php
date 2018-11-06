@@ -138,10 +138,10 @@
     <a class="nav-link has-arrow has-arrow" href="#" aria-expanded="true"><i class="fa fa-wrench fa-fw"></i>Categories</a>
        <ul>
           <li>
-            <a href="/posts">All Categories</a>
+            <a href={{route('categories.index')}}>All Categories</a>
           </li>
           <li>
-              <a href="/posts/create">Create Categories</a>
+              <a href={{route('categories.create')}}>Create Categories</a>
           </li
         ></ul>
     </li>

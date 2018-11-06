@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role; 
 use App\Photo;
+use App\ProfilePicture;
 use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersEditRequest;
 use Illuminate\Support\Facades\Session;
@@ -21,11 +22,12 @@ class AdminUsersController extends Controller
 	
 	//uncomment this function after finishing admin.. redirects if you are not loggedin
 	
+	/*
 	
 	public function __construct(){
 		$this->middleware('auth');
 		}
-		
+		*/
 		
     public function index()
     {
@@ -52,6 +54,7 @@ class AdminUsersController extends Controller
      */
     public function store(UsersRequest $request)
 	     {  
+		
 	
 	   /// checks if password field is set or empty
 		if(trim($request->password) ==''){
@@ -71,8 +74,11 @@ class AdminUsersController extends Controller
 			$input['photo_id'] = $photo->id;//gets the photo id and adds it to the form value arrays
 			*/
 			
-			 $photo = new Photo(['path' => $name]);//create the photo and stores in the phot table as path value = to the name of the photo
-			 $user->photos()->save($photo);
+			 $photo = new Photo(['path' => $name]);//create the photo and stores in the photo table as path value = to the name of the photo
+		     $user->photos()->save($photo);//saves the photo with the user id in the photos table
+			 
+			 $profile_pic = new ProfilePicture(['path' => $name]);
+			 $user->profilePicture()->save($profile_pic);
 			}
 			
 		
@@ -119,19 +125,22 @@ class AdminUsersController extends Controller
         //
 		$user = User::findOrFail($id);
 		
-		if(trim($request->password) ==''){
-			  $input = $request->except('password');
+		$input = $request->all();
+		if(trim($request->input('password')) ==''){
+			  //$input = $request->except('password'); //can use to exempt password field or
+			 $input['password'] = $user->password; //use this inplace of the above
+			 
 			}else{
-			  $input = $request->all();
-			  $input['password'] = bcrypt($request->password); //hash the password value fom the form
+			 $input['password'] = bcrypt($request->password); //hash the password value fom the form
 				}
 				
-		$input = $request->all();
-		if($photofile = $request->file('photo_id')){
+	
+		if($photofile = $request->file('path')){
 		     $name = time() . $photofile->getClientOriginalName();//get the photo path from the form
 			 $photofile->move('images', $name);//cretaes an image folder and moves the photo into the folder
-			 $photo = Photo::create(['path' => $name]);//create the photo and stores in the phot table as path value = to the name of the photo
-			$input['photo_id'] = $photo->id;//gets the photo id and adds it to the form value arrays
+			// $photo = Photo::create(['path' => $name]);//create the photo and stores in the phot table as path value = to the name of the photo
+			 $photo = new Photo(['path'=>$name]);
+			 $user->photos()->save($photo);
 			}
 		
         $user->update($input);
@@ -150,18 +159,17 @@ class AdminUsersController extends Controller
      */
     public function destroy($id)
     {
-       
 		$user = User::findOrFail($id);
-	    $photoid = $user->photo->id;
-		$photo = Photo::findOrFail($photoid);
-		if(file_exists(public_path() . $user->photo->path)){
-			unlink(public_path() . $user->photo->path);
-		    $photo->delete();
-		    $user->delete();
-		}else{
-			$user->delete();
-			}
-		 
+	
+	   foreach($user->photos as $photo){
+		if(file_exists(public_path() . $photo->path)){
+		   unlink(public_path() . $photo->path);
+		   }
+		}
+	
+	    
+			
+		   $user->delete();
 		 //sets the Deleted user session when a user is deleted
 		 Session::flash('deleted_user', 'User deleted!');
 	 	 

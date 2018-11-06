@@ -20,10 +20,11 @@ class AdminPostController extends Controller
      *
      * @return \Illuminate\Http\Response
 	 */
+	 /*
 	 public function __construct(){
 		$this->middleware('auth');
 		}
-     
+     */
     public function index()
     {
         //
@@ -60,7 +61,12 @@ class AdminPostController extends Controller
 		
 		$post = new Post(['title' => $title, 'body' => $body, 'category_id' => $category_id]);
 		
-		 //creates post for the currenly logged in user
+		 //checks if user is loggedin
+		 if(!Auth::user()){
+			 return redirect('/login');
+			 }
+			 
+	    //creates post for the currenly logged in user
 		$user = Auth::user(); //gets the currently logged in user
 		$user->posts()->save($post);
 		
@@ -94,6 +100,9 @@ class AdminPostController extends Controller
     public function edit($id)
     {
         //
+		 $post = Post::findOrFail($id);
+		 $categories = Category::pluck('name', 'id')->all();//usesd to populate the role select input on the create form
+		  return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -106,6 +115,36 @@ class AdminPostController extends Controller
     public function update(Request $request, $id)
     {
         //
+		/*
+		 //creates post for the currenly logged in user
+		$user = Auth::user(); //gets the currently logged in user
+		$post = 
+		$user->posts()->whereId($id)->first()->update($post);
+		*/
+	 
+		$title = $request->input('title');
+		$category_id = $request->input('category');		
+		$body = $request->input('body');
+		
+		$input = array('title' => $title, 'category_id' => $category_id, 'body' => $body );
+		
+		
+		 	$user = Auth::user(); //gets the currently logged in user
+			 $post = $user->posts()->whereId($id)->first();//update for user hasmany post relationship
+			
+			
+		if( $photofile = $request->file('path')){
+			 
+		     $name = time() . $photofile->getClientOriginalName();//get the photo path from the form
+			 $photofile->move('images', $name);//cretaes an image folder and moves the photo into the folder         
+			 /*
+			 $photo->path = $name;
+			 $post->photo->save($photo);*/
+			//$photo = new Photo(['path'=>$name]);
+			$post->photos()->update(['path'=>$name]);
+	      }
+		$user->posts()->whereId($id)->first()->update($input);//update for user hasmany post 
+		return redirect('/admin/posts');
     }
 
     /**
@@ -117,5 +156,13 @@ class AdminPostController extends Controller
     public function destroy($id)
     {
         //
-    }
+		$post = Post::findOrFail($id);
+		if(file_exists(public_path() . $post->photos->path)){
+			unlink(public_path() . $post->photos->path);
+		  
+                }
+	
+		$post->delete();
+	}
+
 }

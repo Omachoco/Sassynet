@@ -19,11 +19,19 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/admin', function(){
-	return view('admin.index');
-	});
+Route::get('/profilepicture/{$id}', 'ProfilePictureController@index')->name('user.profilepicture');
+		 
+		 
 Route::group(['middleware'=>'admin'], function(){
 	Route::resource('/admin/users', 'AdminUsersController');
 	Route::resource('/admin/posts', 'AdminPostController');
+	Route::resource('/admin/categories', 'AdminPostCategoriesController');
+    Route::resource('/admin/comments', 'PostCommentsController');
+	Route::resource('/admin/comment/replies', 'CommentRepliesController');
+	
+	
+	Route::get('/admin', function(){
+	return view('admin.index');
+	     });
 	});
 

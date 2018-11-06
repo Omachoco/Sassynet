@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUserIdPostIdToPhotosTable extends Migration
+class CreateProfilePicturesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class AddUserIdPostIdToPhotosTable extends Migration
      */
     public function up()
     {
-        Schema::table('photos', function (Blueprint $table) {
-            //
-			$table->integer('user_id')->unsigned()->index()->after('path');
-			$table->integer('post_id')->unsigned()->index()->after('path');
+        Schema::create('profile_pictures', function (Blueprint $table) {
+            $table->increments('id');
+			$table->integer('user_id')->unsigned()->index();
+			$table->string('path');
+            $table->timestamps();
         });
     }
 
@@ -27,8 +28,6 @@ class AddUserIdPostIdToPhotosTable extends Migration
      */
     public function down()
     {
-        Schema::table('photos', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('profile_pictures');
     }
 }
