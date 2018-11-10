@@ -35,3 +35,4 @@ Route::group(['middleware'=>'admin'], function(){
 	     });
 	});
 
+Route::resource('/user/posts', 'UserPostsController');

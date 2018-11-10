@@ -10,11 +10,13 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>User</th>
+        <th>Owner</th>
         <th>Category</th>
         <th>Photo</th>
         <th>Title</th>
         <th>Body</th>
+        <th>Comments</th>
+        <th> videos <th>
         <th>Created At</th>
         <th>Updated At</th>
       </tr>
@@ -29,6 +31,8 @@
           <td><img src="{{$post->photos?$post->photos->path:'/images/imgholder.jpeg'}}" class="img-fluid rounded mx-auto" height="50" width="50"></td>
            <td><a href="{{route('posts.edit', $post->id)}}">{{$post->title}}</a></td>
            <td>{{$post->body}}</td>
+           <td>{{$post->comments_count}}</td>
+           <td>{{$post->videos_count}}</td>
            <td>{{$post->created_at->diffForHumans()}}</td>
            <td>{{$post->updated_at->diffForHumans()}}</td>
           </tr>

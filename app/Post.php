@@ -29,4 +29,14 @@ class Post extends Model
 	  return $this->BelongsTo('App\Category');
 	  
 	  }
+	  
+	  //gets all the comment for a post
+	  public function comments()
+    {
+        return $this->morphMany('App\Comment', 'commentable');
+    }
+	
+	  public function videos(){
+		return $this->hasMany('App\Video');
+		}
 }

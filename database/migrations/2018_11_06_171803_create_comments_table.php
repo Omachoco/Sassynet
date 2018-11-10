@@ -20,6 +20,7 @@ class CreateCommentsTable extends Migration
 			$table->integer('is_active')->default(0);
 			$table->string('author');
 			$table->text('body');
+			$table->string('email');
             $table->timestamps();
         });
     }

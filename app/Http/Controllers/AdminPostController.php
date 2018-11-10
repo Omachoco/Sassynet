@@ -9,8 +9,11 @@ use App\Role;
 use App\Photo;
 use App\Post;
 use App\Category;
+use App\Comment;
+use App\Video;
 use App\Http\Requests\PostCreateRequest;
 use illuminate\support\facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 
 class AdminPostController extends Controller
@@ -28,7 +31,7 @@ class AdminPostController extends Controller
     public function index()
     {
         //
-		$posts = Post::all();
+		$posts = Post::withCount('comments', 'videos')->get();
 		return view('admin.posts.index', compact('posts'));
     }
 
@@ -121,30 +124,47 @@ class AdminPostController extends Controller
 		$post = 
 		$user->posts()->whereId($id)->first()->update($post);
 		*/
-	 
-		$title = $request->input('title');
-		$category_id = $request->input('category');		
-		$body = $request->input('body');
 		
-		$input = array('title' => $title, 'category_id' => $category_id, 'body' => $body );
+/*auhorization with policies here
+if ($user->can('update', $post)) {	
+*/
+	
 		
 		
-		 	$user = Auth::user(); //gets the currently logged in user
-			 $post = $user->posts()->whereId($id)->first();//update for user hasmany post relationship
+	   $post = Post::findOrFail($id);
+	   
+       if (Gate::denies('posts.update', $post)) {
+          // The current user can't update the post...
+          return redirect('/login');
+                 }
+
+         //the current user can update
+       if (Gate::allows('posts.update', $post)) {
+	
+           // The current user can update the post...
+		  $user = Auth::user();
+     
+		  $title = $request->input('title');
+		  $category_id = $request->input('category');		
+		  $body = $request->input('body');
+		
+		  $input = array('title' => $title, 'category_id' => $category_id, 'body' => $body );
+		
 			
-			
-		if( $photofile = $request->file('path')){
+		  if( $photofile = $request->file('path')){
 			 
 		     $name = time() . $photofile->getClientOriginalName();//get the photo path from the form
 			 $photofile->move('images', $name);//cretaes an image folder and moves the photo into the folder         
-			 /*
-			 $photo->path = $name;
-			 $post->photo->save($photo);*/
 			//$photo = new Photo(['path'=>$name]);
-			$post->photos()->update(['path'=>$name]);
+			 $post = $user->posts()->whereId($id)->first();//update for user hasmany post relationship
+			 $post->photos()->update(['path'=>$name]);
 	      }
-		$user->posts()->whereId($id)->first()->update($input);//update for user hasmany post 
-		return redirect('/admin/posts');
+		   
+		  $user->posts()->whereId($id)->first()->update($input);//update for user hasmany post 
+		  return redirect('/admin/posts');
+		}
+	
+
     }
 
     /**
