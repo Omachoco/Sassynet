@@ -4,6 +4,6 @@
 @section('content')
 
         
-<h1>Comments </h1>
+<h1>Comment replies </h1>
 
 @endsection

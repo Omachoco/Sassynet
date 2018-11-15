@@ -1,20 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User;
-use App\Role; 
-use App\Photo;
-use App\Post;
-use App\Category;
-use App\Comment;
-use Illuminate\Http\Request;
-use illuminate\support\facades\Auth;
 
-class PostCommentsController extends Controller
+use Illuminate\Http\Request;
+
+class UserPostsController extends Controller
 {
-    //
-	
-	/**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -22,7 +14,7 @@ class PostCommentsController extends Controller
     public function index()
     {
         //
-		
+		return view('user.userposts.index');
     }
 
     /**
@@ -43,36 +35,8 @@ class PostCommentsController extends Controller
      */
     public function store(Request $request)
     {
-       if(Auth::user()){
-			$user = Auth::user();
-			$username = $user->name;
-			$email = $user->email;
-			}else{
-		
-				$username = ''; //testing
-				$email = ''; //tesing
-				//$username = $request->input('name');
-				//$email = $request->input('email');
-				}
-       $post_id = $request->input('post_id');
-	 
-       $post = Post::findOrFail($post_id);
-	 
-	   $input =[
-        'author' => $username,
-        'body'   => $request->input('body'),
-	    'email'  => $email
-             ];
-	   
-	   $comment = new Comment($input);
-       $post->comments()->save($comment);
-	 
-
-	 $request->session()->flash('comment_message', 'Your message have been submitted and its waiting for approval');
-	 
-	 return redirect()->back();
-	    }
-	
+        //
+    }
 
     /**
      * Display the specified resource.

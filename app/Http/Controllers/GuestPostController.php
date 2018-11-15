@@ -7,14 +7,12 @@ use App\Photo;
 use App\Post;
 use App\Category;
 use App\Comment;
+use App\Video;
 use Illuminate\Http\Request;
-use illuminate\support\facades\Auth;
 
-class PostCommentsController extends Controller
+class GuestPostController extends Controller
 {
-    //
-	
-	/**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -22,7 +20,8 @@ class PostCommentsController extends Controller
     public function index()
     {
         //
-		
+	    $posts = Post::withCount('comments', 'videos')->get();
+		return view('\welcomeclone', compact('posts'));
     }
 
     /**
@@ -43,36 +42,9 @@ class PostCommentsController extends Controller
      */
     public function store(Request $request)
     {
-       if(Auth::user()){
-			$user = Auth::user();
-			$username = $user->name;
-			$email = $user->email;
-			}else{
+        //
 		
-				$username = ''; //testing
-				$email = ''; //tesing
-				//$username = $request->input('name');
-				//$email = $request->input('email');
-				}
-       $post_id = $request->input('post_id');
-	 
-       $post = Post::findOrFail($post_id);
-	 
-	   $input =[
-        'author' => $username,
-        'body'   => $request->input('body'),
-	    'email'  => $email
-             ];
-	   
-	   $comment = new Comment($input);
-       $post->comments()->save($comment);
-	 
-
-	 $request->session()->flash('comment_message', 'Your message have been submitted and its waiting for approval');
-	 
-	 return redirect()->back();
-	    }
-	
+    }
 
     /**
      * Display the specified resource.
@@ -83,6 +55,7 @@ class PostCommentsController extends Controller
     public function show($id)
     {
         //
+		
     }
 
     /**
@@ -118,4 +91,21 @@ class PostCommentsController extends Controller
     {
         //
     }
+	
+	public function post($post)
+	 {
+	
+		// $post = Post::withCount('comments', 'videos')->get();
+	
+	    $post = Post::withCount(['comments', 'videos' => function ($query) {
+                 $query->where('post_id', 'id');
+               }])->get();
+			  
+			   // $post[0]->comments_count 
+			   //return $post[0]->videos_count;
+
+			 return view('post', compact('post'));
+	  }
+		
+		
 }

@@ -17,7 +17,9 @@ class Comment extends Model
 		 'email'
     ];
 	
-	
+   protected $table = 'all_comments';
+	 
+	 
    public function commentable()
        {
          return $this->morphTo();
@@ -29,4 +31,5 @@ class Comment extends Model
 	   
 	   }  
 	  
+  
 } 

@@ -26,8 +26,8 @@ Route::group(['middleware'=>'admin'], function(){
 	Route::resource('/admin/users', 'AdminUsersController');
 	Route::resource('/admin/posts', 'AdminPostController');
 	Route::resource('/admin/categories', 'AdminPostCategoriesController');
-    Route::resource('/admin/comments', 'PostCommentsController');
-	Route::resource('/admin/comment/replies', 'CommentRepliesController');
+    Route::resource('/admin/comments', 'AdminPostCommentsController');
+	Route::resource('/admin/comments/replies', 'AdminCommentRepliesController');
 	
 	
 	Route::get('/admin', function(){
@@ -35,4 +35,11 @@ Route::group(['middleware'=>'admin'], function(){
 	     });
 	});
 
-Route::resource('/user/posts', 'UserPostsController');
+Route::resource('/user/userposts', 'UserPostsController');
+Route::resource('/user/usercomments', 'PostCommentsController');
+Route::resource('/user/usercomment/replies', 'CommentRepliesController');
+
+Route::get('/welcomeclone',  'GuestPostController@index');
+
+Route::get('/post/{post}', 'GuestPostController@post')->name('post');
+
