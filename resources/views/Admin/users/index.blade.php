@@ -31,8 +31,8 @@
          @foreach($users as $user) 
           <tr>
           <td>{{$user->id}}</td>
-          <td><img src="{{$user->profilePicture?$user->profilePicture->path:'/images/placeholde.jpg'}}" class="img-fluid rounded mx-auto" height="50" width="50"></td>
          
+         <td><img src="{{$user->profilepicture?$user->profilepicture->path:'/images/imgholder.jpeg'}}" class="img-fluid rounded mx-auto" height="50" width="50"></td>
     
            <td><a href="{{route('users.edit', $user->id)}}">{{$user->name}}</a></td>
            <td>{{$user->email}}</td>

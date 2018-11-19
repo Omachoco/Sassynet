@@ -92,19 +92,19 @@ class GuestPostController extends Controller
         //
     }
 	
-	public function post($post)
+	public function post($id)
 	 {
 	
 		// $post = Post::withCount('comments', 'videos')->get();
-	
-	    $post = Post::withCount(['comments', 'videos' => function ($query) {
-                 $query->where('post_id', 'id');
-               }])->get();
-			  
+	   //returns the a count of comments and posts for the post with the id provided
+	    
 			   // $post[0]->comments_count 
 			   //return $post[0]->videos_count;
-
-			 return view('post', compact('post'));
+         
+		 $post = Post::findOrFail($id);
+		 $comments = $post->comments()->where('is_Active', 1)->get(); //returns comments for the post with is as_active/approve set to true
+	      return view('post', compact('post', 'comments'));
+		  
 	  }
 		
 		

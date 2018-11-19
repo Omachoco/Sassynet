@@ -27,6 +27,12 @@
         <td>{{$comment->author}}</td>
         <td>{{$comment->email}}</td>
         <td>{{$comment->body}}</td>
+        
+        @if($comment->commentable->is_post  == 1) 
+           <td><a href="{{route('posts.show', $comment->commentable->id)}}">Visit Post</a></td>
+          @else 
+           <td><a href="{{route('posts.show', $comment->commentable->id)}}">Visit Video</a></td>
+          @endif
         <td>{{$comment->created_at->diffForHumans()}}</td>
       </tr>
        @endforeach
@@ -37,4 +43,5 @@
   @else
      <h1 class="text-center">No Comments</h1>
   @endif
+  
 @endsection

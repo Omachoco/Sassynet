@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Post;
 use Illuminate\Http\Request;
 
 class AdminPostCommentsController extends Controller
@@ -15,8 +16,9 @@ class AdminPostCommentsController extends Controller
     public function index()
     {
         //
+		//gets all the comments and pass it to the viewcoments views/page
 		$comments = Comment::all();
-		return view('admin.comments.index', compact('comments'));
+		  return view('admin.comments.allcomments', compact('comments'));
 		
     }
 
@@ -50,6 +52,7 @@ class AdminPostCommentsController extends Controller
     public function show($id)
     {
         //
+		return $id;
     }
 
     /**
@@ -73,8 +76,11 @@ class AdminPostCommentsController extends Controller
     public function update(Request $request, $id)
     {
         //
-    }
-
+		//used to approve a comments as specified in the id and rediect back to the comments page
+		$comment = Comment::findOrFail($id);
+		$comment->update($request->all());
+		return redirect()->back();
+		}
     /**
      * Remove the specified resource from storage.
      *
@@ -83,6 +89,16 @@ class AdminPostCommentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //deletes a comment and redirects back to the comments page
+		$comment = Comment::findOrFail($id);
+		$comment->delete();
+		return redirect()->back();
     }
+	
+	public function commentsForPost($postid){
+		  $post = Post::findOrFail($postid);
+		 $comments = $post->comments;
+		 
+		 return view('admin.comments.postcomments', compact('comments'));
+		}
 }

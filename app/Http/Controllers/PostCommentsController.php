@@ -68,7 +68,7 @@ class PostCommentsController extends Controller
        $post->comments()->save($comment);
 	 
 
-	 $request->session()->flash('comment_message', 'Your message have been submitted and its waiting for approval');
+	 $request->session()->flash('comment_message', 'Your message have been submitted and it\'s waiting approval');
 	 
 	 return redirect()->back();
 	    }

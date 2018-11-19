@@ -17,8 +17,8 @@
         <th>Body</th>
         <th>Comments</th>
         <th> videos <th>
-        <th>Created At</th>
-        <th>Updated At</th>
+        <th>Created </th>
+        <th>Updated </th>
       </tr>
     </thead>
     <tbody>
@@ -31,8 +31,9 @@
           <td><img src="{{$post->photos?$post->photos->path:'/images/imgholder.jpeg'}}" class="img-fluid rounded mx-auto" height="50" width="50"></td>
            <td><a href="{{route('posts.edit', $post->id)}}">{{$post->title}}</a></td>
            <td>{{$post->body}}</td>
-           <td>{{$post->comments_count}}</td>
-           <td>{{$post->videos_count}}</td>
+           <td><a href="{{route('post.comments', $post->id)}}">{{$post->comments_count}}</a></td>
+           <td><a href="">{{$post->videos_count}}</a></td>
+           <td></td>
            <td>{{$post->created_at->diffForHumans()}}</td>
            <td>{{$post->updated_at->diffForHumans()}}</td>
           </tr>
