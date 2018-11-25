@@ -2,11 +2,15 @@
 
 namespace App;
 
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    //
+    
+   use Sluggable;
+   use SluggableScopeHelpers;
 	  
   protected $fillable = [
         'category_id', 
@@ -39,4 +43,14 @@ class Post extends Model
 	  public function videos(){
 		return $this->hasMany('App\Video');
 		}
+		
+	public function sluggable()
+    {
+        return [
+            'title_slug' => [
+                'source' => 'title',
+				'onUpdate' => true,
+            ]
+        ];
+    }
 }

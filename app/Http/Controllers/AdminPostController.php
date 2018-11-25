@@ -30,8 +30,8 @@ class AdminPostController extends Controller
      */
     public function index()
     {
-        //
-		$posts = Post::withCount('comments', 'videos')->get();
+        //>
+		$posts = Post::withCount('comments', 'videos')->paginate(2);
 		return view('admin.posts.index', compact('posts'));
     }
 
@@ -89,11 +89,12 @@ class AdminPostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($title_slug)
     {
         //
-	 $post = Post::findOrFail($id);
-	      return view('post', compact('post'));;
+	 $post = Post::findBySlugOrFail($title_slug);
+	  $comments = $post->comments()->where('is_Active', 1)->get();
+	      return view('post', compact('post', 'comments'));
     }
 
     /**
